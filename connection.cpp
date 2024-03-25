@@ -30,8 +30,12 @@ void Connection::addSensore(Sensore* sensore) {
         return;
     }
     //controllo per ogni elemento di classe diversa da fare per forza con il for
-    //usa bool result
-
+    for (int i = 0; i < (int)this->sensori.size(); i++) {
+        if (typeid(this->sensori[i]) == typeid(sensore)) {
+            return;
+        }
+    }
+    this->sensori.push_back(sensore);
 }
 
 void Connection::removeSensore(Sensore* sensore) {
@@ -41,4 +45,7 @@ void Connection::removeSensore(Sensore* sensore) {
             break;
         }
     }
+}
+void Connection::removeSensoreAt(int index) {
+    this->sensori.erase(this->sensori.begin() + index);
 }

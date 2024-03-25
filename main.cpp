@@ -202,6 +202,17 @@ int main(int argc, char *argv[])
     scrollArea3->setWidgetResizable(true);
 
     QListWidget *connectionsList = new QListWidget;
+    // Add icon with text with every item
+    QListWidgetItem *connection1 = new QListWidgetItem;
+    QLabel *label1 = new QLabel("Connection 1");
+    QLabel *label2 = new QLabel("Connection 1");
+    label1->setStyleSheet("QLabel { padding-right: 5px; }");
+    connection1->setSizeHint(QSize(0, 40));
+    connection1->setIcon(QIcon(":/resources/icons/Connection.png"));
+    connectionsList->addItem(connection1);
+    connectionsList->setItemWidget(connection1, label1);
+
+
 
     // connectionsList->addItem("Connection 1");
     // connectionsList->addItem("Connection 2");

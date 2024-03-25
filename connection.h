@@ -18,6 +18,7 @@ public:
     Host* getPeers();
     void addSensore(Sensore* sensore);
     void removeSensore(Sensore* sensore);
+    void removeSensoreAt(int index);
     ~Connection();
 };
 
