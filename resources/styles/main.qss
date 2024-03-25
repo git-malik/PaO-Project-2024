@@ -1,0 +1,32 @@
+/* Add your custom styles here */
+
+/* Example styles */
+/* QWidget {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+QPushButton {
+    background-color: #f0f0f0;
+    color: #000000;
+    border: 1px solid #cccccc;
+    padding: 5px;
+}
+
+QLineEdit {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+    padding: 5px;
+} */
+QLineEdit {
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QPushButton {
+    border-radius: 5px;
+    padding: 7px 14px 7px 14px;
+    background-color: white;
+}
+/* Add more styles as needed */
