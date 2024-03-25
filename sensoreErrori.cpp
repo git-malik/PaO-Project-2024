@@ -9,3 +9,7 @@ void SensoreErrori::misura() {
     PacchettoErrori * p = new PacchettoErrori();
     this->pacchetti.push_back(p);
 }
+
+SensoreErrori::~SensoreErrori() {
+    delete this;
+}

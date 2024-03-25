@@ -14,6 +14,7 @@ public:
     Pacchetto(const Pacchetto &p);
     virtual long int getTime();
     virtual float getValore();
+    virtual ~Pacchetto();
 };
 
 #endif

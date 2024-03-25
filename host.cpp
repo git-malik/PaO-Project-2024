@@ -24,3 +24,8 @@ Host::Host() {
     this->id = new char[1];
     this->id[0] = '\0';
 }
+
+//destructor
+Host::~Host(){
+    delete this;
+}

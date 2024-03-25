@@ -6,7 +6,7 @@ Connection::Connection(char* id, Host peer1, Host peer2) {
     this->id = id;
     this->peer1 = peer1;
     this->peer2 = peer2;
-    this->sensori = std::vector<Sensore*>();
+    this->sensori = std::vector<Sensore*>(3);
 }
 
 char* Connection::getId() {
@@ -25,7 +25,13 @@ std::vector<Sensore*> Connection::getSensori() {
 }
 
 void Connection::addSensore(Sensore* sensore) {
-    this->sensori.push_back(sensore);
+    //check if there's exactly three sensor with all different class name
+    if (this->sensori.size() == 3) {
+        return;
+    }
+    //controllo per ogni elemento di classe diversa da fare per forza con il for
+    //usa bool result
+
 }
 
 void Connection::removeSensore(Sensore* sensore) {

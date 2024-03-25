@@ -15,7 +15,7 @@ public:
     virtual int getBufferSize();
     virtual std::vector<Pacchetto> getPacchetti();
     virtual void misura() = 0;
-    ~Sensore();
+    virtual ~Sensore();
 };
 
 #endif

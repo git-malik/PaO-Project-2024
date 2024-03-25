@@ -3,11 +3,23 @@
 #include <random>
 #include <iostream>
 
+PacchettoErrori::PacchettoErrori(long int timestamp, float valore) : Pacchetto(timestamp, valore){};
+
+PacchettoErrori::PacchettoErrori(): Pacchetto() {}
+
 float PacchettoErrori::randomFloat()
 {
     return 1+ (float)(rand()) + 99; 
 }
 
-PacchettoErrori::PacchettoErrori(long int timestamp, float valore) : Pacchetto(timestamp, valore){};
+long int PacchettoErrori::getTime() {
+    //call parent function getTime
+    return Pacchetto::getTime();
+}
 
-PacchettoErrori::PacchettoErrori(): Pacchetto() {}
+float PacchettoErrori::getValore() {
+    //call parent function getValore
+    return Pacchetto::getValore();
+}
+
+PacchettoErrori::~PacchettoErrori(){delete this;};

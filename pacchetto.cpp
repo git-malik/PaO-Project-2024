@@ -8,6 +8,8 @@ Pacchetto::Pacchetto(){
     this->valore = randomFloat();
 }
 
+Pacchetto::~Pacchetto() {delete this;}
+
 float Pacchetto::randomFloat()
 {
     srand(time(0));

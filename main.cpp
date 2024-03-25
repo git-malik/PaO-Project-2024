@@ -47,46 +47,7 @@ int main(int argc, char *argv[])
     QHBoxLayout *mainLayout = new QHBoxLayout(&window);
 
     // Columns
-    // First column
-    QVBoxLayout *column1 = new QVBoxLayout;
-    window.setLayout(mainLayout); // Set mainLayout as the layout for the MainWindow object
-    mainLayout->addLayout(column1);
-    // Column Title label
-    QLabel *column1Title = new QLabel("Hosts");
-    column1->addWidget(column1Title);
-    // List of hosts (scrollable)
-    QScrollArea *scrollArea = new QScrollArea;
-    scrollArea->setWidgetResizable(true);
-
-    QListWidget *hostsList = new QListWidget;
-    hostsList->addItem("Host 1");
-    hostsList->addItem("Host 2");
-    hostsList->addItem("Host 3");
-    hostsList->addItem("Host 4");
-    hostsList->addItem("Host 5");
-    hostsList->addItem("Host 6");
-    hostsList->addItem("Host 7");
-    hostsList->addItem("Host 8");
-    hostsList->addItem("Host 9");
-    hostsList->addItem("Host 10");
-    hostsList->addItem("Host 11");
-    hostsList->addItem("Host 12");
-
-    hostsList->setSelectionMode(QAbstractItemView::SingleSelection);
-    hostsList->setSelectionBehavior(QAbstractItemView::SelectRows);
-    hostsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    hostsList->setDragDropMode(QAbstractItemView::NoDragDrop);
-    hostsList->setAlternatingRowColors(true);
-    hostsList->setStyleSheet("QListWidget::item { border-bottom: 1px solid black; }");
-    hostsList->setFixedWidth(200);
-    hostsList->setFixedHeight(300);
-
-    scrollArea->setWidget(hostsList);
-    column1->addWidget(scrollArea);
-
-
-
-    // Second column
+     // Second column
     QVBoxLayout *column2 = new QVBoxLayout;
     mainLayout->addLayout(column2);
     // Column Title label
@@ -192,7 +153,40 @@ int main(int argc, char *argv[])
 
 
 
+    // First column
+    QVBoxLayout *column1 = new QVBoxLayout;
+    window.setLayout(mainLayout); // Set mainLayout as the layout for the MainWindow object
+    mainLayout->addLayout(column1);
+    // Column Title label
+    QLabel *column1Title = new QLabel("Hosts");
+    column1->addWidget(column1Title);
+    // List of hosts (scrollable)
+    QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setWidgetResizable(true);
 
+    QListWidget *hostsList = new QListWidget;
+    // Add icon with text with every item
+    QListWidgetItem *item1 = new QListWidgetItem("Host 1");
+    item1->setIcon(QIcon(":/resources/icons/pc.png"));
+    hostsList->addItem(item1);
+
+    QListWidgetItem *item2 = new QListWidgetItem("Host 2");
+    item2->setIcon(QIcon(":/resources/icons/pc.png"));
+    hostsList->addItem(item2);
+
+    QListWidgetItem *item3 = new QListWidgetItem("Host 3");
+    item3->setIcon(QIcon(":/resources/icons/pc.png"));
+    hostsList->addItem(item3);
+
+    hostsList->setSelectionMode(QAbstractItemView::SingleSelection);
+    hostsList->setSelectionBehavior(QAbstractItemView::SelectRows);
+    hostsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    hostsList->setDragDropMode(QAbstractItemView::NoDragDrop);
+    hostsList->setAlternatingRowColors(true);
+    // hostsList->setStyleSheet("QListWidget::item { border-bottom: 1px solid black; }");
+
+    scrollArea->setWidget(hostsList);
+    column1->addWidget(scrollArea);
 
 
 
@@ -208,18 +202,16 @@ int main(int argc, char *argv[])
     scrollArea3->setWidgetResizable(true);
 
     QListWidget *connectionsList = new QListWidget;
-    connectionsList->addItem("Connection 1");
-    connectionsList->addItem("Connection 2");
-    connectionsList->addItem("Connection 3");
+
+    // connectionsList->addItem("Connection 1");
+    // connectionsList->addItem("Connection 2");
+    // connectionsList->addItem("Connection 3");
 
     connectionsList->setSelectionMode(QAbstractItemView::SingleSelection);
     connectionsList->setSelectionBehavior(QAbstractItemView::SelectRows);
     connectionsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
     connectionsList->setDragDropMode(QAbstractItemView::NoDragDrop);
     connectionsList->setAlternatingRowColors(true);
-    connectionsList->setStyleSheet("QListWidget::item { border-bottom: 1px solid black; }");
-    connectionsList->setFixedWidth(200);
-    connectionsList->setFixedHeight(300);
 
     scrollArea3->setWidget(connectionsList);
     column3->addWidget(scrollArea3);

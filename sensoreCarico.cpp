@@ -7,3 +7,7 @@ void SensoreCarico::misura() {
     PacchettoCarico * p = new PacchettoCarico();
     this->pacchetti.push_back(p);
 }
+
+SensoreCarico::~SensoreCarico() {
+    delete this;
+}
