@@ -22,5 +22,3 @@ float PacchettoBanda::getValore() {
     //call parent function getValore
     return Pacchetto::getValore();
 }
-
-PacchettoBanda::~PacchettoBanda(){delete this;};

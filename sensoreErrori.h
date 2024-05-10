@@ -6,13 +6,14 @@
 
 class SensoreErrori : public Sensore{
     private:
-        char* id;
+        static int currentid;
+        int id;
         std::vector<PacchettoErrori*> pacchetti;
         int bufferSize;
     public:
-        SensoreErrori(char* id, int bufferSize);
+        SensoreErrori(int bufferSize);
+        std::string getId();
         void misura();
-        ~SensoreErrori();
 };
 
 #endif

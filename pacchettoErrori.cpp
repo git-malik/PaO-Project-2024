@@ -21,5 +21,3 @@ float PacchettoErrori::getValore() {
     //call parent function getValore
     return Pacchetto::getValore();
 }
-
-PacchettoErrori::~PacchettoErrori(){delete this;};

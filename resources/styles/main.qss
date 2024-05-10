@@ -1,24 +1,6 @@
-/* Add your custom styles here */
+/* Custom Styles */
 
-/* Example styles */
-/* QWidget {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-QPushButton {
-    background-color: #f0f0f0;
-    color: #000000;
-    border: 1px solid #cccccc;
-    padding: 5px;
-}
-
-QLineEdit {
-    background-color: #ffffff;
-    color: #000000;
-    border: 1px solid #cccccc;
-    padding: 5px;
-} */
+/* Elements */
 QLineEdit {
     border-radius: 5px;
     padding: 5px;
@@ -29,4 +11,40 @@ QPushButton {
     padding: 7px 14px 7px 14px;
     background-color: white;
 }
-/* Add more styles as needed */
+
+QPushButton:hover {
+    background-color: #f3f3f3;
+}
+
+/* IDs */
+
+/* Classes */
+*[cssClass="green"] { 
+    background-color: #229420;
+    color: #bbffb9;
+}
+
+*[cssClass="red"] { 
+    background-color: #992222;
+    color: #ffbebe;
+}
+
+*[cssClass="blue"] {
+    background-color: #222299;
+    color: #bec0ff;
+}
+
+*[cssClass="red"]:hover { 
+    background-color: #BF2E2E;
+    color: #FFFFFF;
+}
+
+*[cssClass="green"]:hover { 
+    background-color: #31BF2E;
+    color: #FFFFFF;
+}
+
+*[cssClass="blue"]:hover { 
+    background-color: #2E31BF;
+    color: #FFFFFF;
+}

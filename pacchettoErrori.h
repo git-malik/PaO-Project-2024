@@ -14,7 +14,6 @@ public:
     PacchettoErrori();
     float getValore();
     long int getTime();
-    ~PacchettoErrori();
 };
 
 #endif

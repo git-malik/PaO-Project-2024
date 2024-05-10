@@ -6,13 +6,14 @@
 
 class SensoreBanda : public Sensore{
     private:
-        char* id;
+        static int currentid;
+        int id;
         std::vector<PacchettoBanda*> pacchetti;
         int bufferSize;
     public:
-        SensoreBanda(char* id, int bufferSize);
+        SensoreBanda(int bufferSize);
+        std::string getId();
         void misura();
-        ~SensoreBanda();
 };
 
 #endif

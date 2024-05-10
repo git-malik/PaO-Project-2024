@@ -3,6 +3,10 @@
         <file>icons/Connection.png</file>
         <file>icons/pc.png</file>
         <file>icons/searchico.png</file>
+        <file>icons/edit.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/open.png</file>
+        <file>icons/add.png</file>
     </qresource>
     <qresource prefix="/styles">
         <file>styles/main.qss</file>

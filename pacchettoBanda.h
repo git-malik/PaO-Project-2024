@@ -1,5 +1,5 @@
-#ifndef PACCHETTOCARICO_H
-#define PACCHETTOCARICO_H
+#ifndef PACCHETTOBANDA_H
+#define PACCHETTOBANDA_H
 
 #include "pacchetto.h"
 
@@ -14,7 +14,6 @@ public:
     PacchettoBanda();
     float getValore();
     long int getTime();
-    ~PacchettoBanda();
 };
 
 #endif

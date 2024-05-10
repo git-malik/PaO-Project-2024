@@ -22,5 +22,3 @@ float PacchettoCarico::getValore() {
     //call parent function getValore
     return Pacchetto::getValore();
 }
-
-PacchettoCarico::~PacchettoCarico(){delete this;};

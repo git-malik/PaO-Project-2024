@@ -1,18 +1,20 @@
-#ifndef SENSOREERRORI_H
-#define SENSOREERRORI_H
+#ifndef SENSORECARICO_H
+#define SENSORECARICO_H
 
 #include "sensore.h"
 #include "pacchettoCarico.h"
 
 class SensoreCarico : public Sensore{
     private:
-        char* id;
+        
+        static int currentid;
+        int id;
         std::vector<PacchettoCarico*> pacchetti;
         int bufferSize;
     public:
-        SensoreCarico(char* id, int bufferSize);
+        SensoreCarico(int bufferSize);
+        std::string getId();
         void misura();
-        ~SensoreCarico();
 };
 
 #endif
