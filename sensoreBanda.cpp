@@ -10,17 +10,12 @@ SensoreBanda::SensoreBanda(int bufferSize) : Sensore(bufferSize) {
 }
 
 void SensoreBanda::misura() {
-    PacchettoBanda * p = new PacchettoBanda();
-    //this->this->pacchetti.push_back(p);
-
+    PacchettoBanda *p = new PacchettoBanda();
     this->pacchetti.push_back(p);
-    std::rotate(this->pacchetti.rbegin(), this->pacchetti.rbegin() + 1, this->pacchetti.rend());
-    for (int i = 0; i < this->pacchetti.size(); i++)
-    {
-        std::cout << "Pacchetto " << i << " Banda: " << this->pacchetti[i]->getValore() << std::endl;
-    }
-    //print size
-    std::cout << "Size: " << this->pacchetti.size() << std::endl;
+}
+
+std::vector<PacchettoBanda*> SensoreBanda::getPacchetti() {
+    return this->pacchetti;
 }
 
 //getId

@@ -12,7 +12,7 @@ SensoreErrori::SensoreErrori(int bufferSize) : Sensore(bufferSize) {
 }
 
 void SensoreErrori::misura() {
-    PacchettoErrori * p = new PacchettoErrori();
+    PacchettoErrori* p = new PacchettoErrori();
     this->pacchetti.push_back(p);
 }
 
@@ -20,4 +20,9 @@ void SensoreErrori::misura() {
 std::string SensoreErrori::getId() {
     // Return the concatenation of the string "SensoreErrori" and the id
     return "ES#" + std::to_string(this->id);
+}
+
+//getPacchetti
+std::vector<PacchettoErrori*> SensoreErrori::getPacchetti() {
+    return this->pacchetti;
 }

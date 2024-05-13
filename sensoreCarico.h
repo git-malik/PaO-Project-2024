@@ -14,6 +14,7 @@ class SensoreCarico : public Sensore{
     public:
         SensoreCarico(int bufferSize);
         std::string getId();
+        std::vector<PacchettoCarico*> getPacchetti();
         void misura();
 };
 

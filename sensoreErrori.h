@@ -13,6 +13,7 @@ class SensoreErrori : public Sensore{
     public:
         SensoreErrori(int bufferSize);
         std::string getId();
+        std::vector<PacchettoErrori*> getPacchetti();
         void misura();
 };
 

@@ -27,6 +27,8 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QMainWindow>
+#include <QToolBar>
+#include <QToolButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -231,6 +233,39 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea3->setWidget(connectionsList);
     column3->addWidget(scrollArea3);
 
+
+    // Set the toolbar
+    QToolBar *toolbar = addToolBar("ToolBar");
+    toolbar->setFloatable(false);
+    // toolbar->setMovable(false);
+
+    // Save button
+    QToolButton *saveButton = new QToolButton(this);
+    saveButton->setIcon(QIcon(":/resources/icons/save.png"));
+    saveButton->setText("Save");
+    saveButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    saveButton->setProperty("cssClass", "label");
+    toolbar->addWidget(saveButton);
+
+    // Export button
+    QToolButton *exportButton = new QToolButton(this);
+    exportButton->setIcon(QIcon(":/resources/icons/export.png"));
+    exportButton->setText("Export");
+    exportButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    exportButton->setProperty("cssClass", "label");
+    toolbar->addWidget(exportButton);
+
+    // Import button
+    QToolButton *importButton = new QToolButton(this);
+    importButton->setIcon(QIcon(":/resources/icons/import.png"));
+    importButton->setText("Import");
+    importButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    importButton->setProperty("cssClass", "label");
+    toolbar->addWidget(importButton);
+
+    // Connect the clicked signal of the buttons to slots
+    // connect(saveButton, SIGNAL(clicked()), this, SLOT(save()));
+    // connect(exportButton, SIGNAL(clicked()), this, SLOT(export()));
 
     // Set the central widget
     setCentralWidget(window);

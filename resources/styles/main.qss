@@ -18,7 +18,7 @@ QPushButton:hover {
 
 /* IDs */
 
-/* Classes */
+/* Classes Color */
 *[cssClass="green"] { 
     background-color: #229420;
     color: #bbffb9;
@@ -47,4 +47,36 @@ QPushButton:hover {
 *[cssClass="blue"]:hover { 
     background-color: #2E31BF;
     color: #FFFFFF;
+}
+
+/* Classes Font Size */
+*[cssClass="small"] {
+    font-size: 10pt;
+}
+
+*[cssClass="medium"] {
+    font-size: 12pt;
+}
+
+*[cssClass="large"] {
+    font-size: 14pt;
+}
+
+/* Classes Font Weight */
+*[cssClass="light"] {
+    font-weight: 300;
+}
+
+*[cssClass="normal"] {
+    font-weight: 400;
+}
+
+*[cssClass="bold"] {
+    font-weight: 700;
+}
+
+/* Classes Label */
+*[cssClass="label"] {
+    font-size: 14pt;
+    font-weight: 500;
 }

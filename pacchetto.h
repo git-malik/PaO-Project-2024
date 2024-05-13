@@ -5,15 +5,13 @@ class Pacchetto
 private:
     long int timestamp;
     float valore;
-protected:
-    virtual float randomFloat();
 public:
+    virtual float randomFloat();
     Pacchetto(long int timestamp, float valore);
     Pacchetto();
-    //copy constructor
     Pacchetto(const Pacchetto &p);
-    virtual long int getTime();
-    virtual float getValore();
+    long int getTime();
+    float getValore();
 };
 
 #endif

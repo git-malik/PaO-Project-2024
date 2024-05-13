@@ -13,6 +13,7 @@ class SensoreBanda : public Sensore{
     public:
         SensoreBanda(int bufferSize);
         std::string getId();
+        std::vector<PacchettoBanda*> getPacchetti();
         void misura();
 };
 

@@ -3,17 +3,17 @@
 
 #include "pacchetto.h"
 
-class PacchettoErrori : public Pacchetto {
+class PacchettoErrori : public Pacchetto
+{
 private:
     long int timestamp;
     float valore;
-protected:
-    virtual float randomFloat();
 public:
+    float randomFloat() override;
     PacchettoErrori(long int timestamp, float valore);
+    PacchettoErrori(float random);
     PacchettoErrori();
     float getValore();
     long int getTime();
 };
-
 #endif
