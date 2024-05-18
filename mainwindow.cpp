@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "view/graficoSensore.cpp"
+
 #include <QApplication>
 #include <QWidget>
 #include <QVBoxLayout>
@@ -29,10 +31,12 @@
 #include <QMainWindow>
 #include <QToolBar>
 #include <QToolButton>
+#include <QStackedWidget>
 
+// MainWindow::MainWindow(Connection *data, int size, QWidget *parent)
+//     : QMainWindow(parent), c_data(data), c_size(size) {
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-{
+    : QMainWindow(parent){
     // QWidget window;
     QWidget *window = new QWidget;
     window->setWindowTitle("SensNet");
@@ -92,11 +96,22 @@ MainWindow::MainWindow(QWidget *parent)
     // add an horizontal layout for the sensor name and the sensor id
     QHBoxLayout *sensorNameId = new QHBoxLayout;
     QLabel *sensorName = new QLabel("Speed");
+    QLineEdit *sensorNameEdit = new QLineEdit("Speed");
+
+    // Create QStackedWidget and add QLabel and QLineEdit
+    QStackedWidget *stackedWidget = new QStackedWidget;
+    stackedWidget->addWidget(sensorName);
+    stackedWidget->addWidget(sensorNameEdit);
+
+
+
     QLabel *sensorId = new QLabel("#AD0");
+
 
     // Add a horizontal spacer to align the labels to the left
     // QSpacerItem *spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    sensorNameId->addWidget(sensorName);
+    sensorNameId->addWidget(stackedWidget);
+    // sensorNameId->addWidget(sensorName);
     sensorNameId->addWidget(sensorId);
     sensorNameId->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
@@ -132,10 +147,35 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon openIcon(":/resources/icons/open.png");
     openButton->setIcon(openIcon);
     sensorGraphicLayout->addWidget(openButton);
+    //add slot for open button
+    connect(openButton, SIGNAL(clicked()), this, SLOT(openChart()));
 
     // Add an horizontal layout for the "Edit" button and the "Delete" button
     QHBoxLayout *sensorEditDelete = new QHBoxLayout;
     QPushButton *editButton = new QPushButton(" EDIT");
+    // Connect the clicked signal of the "Edit" button to a lambda function
+    connect(editButton, &QPushButton::clicked, this, [&, stackedWidget, editButton, sensorName, sensorNameEdit] {
+        if (editButton->text() == " EDIT") {
+            // Switch to QLineEdit on "Edit" button click
+            stackedWidget->setCurrentIndex(1);
+
+            // Change the button text and color
+            editButton->setText(" CONFIRM");
+            editButton->setStyleSheet("background-color: green; color: white;");
+            editButton->setIcon(QIcon(":/resources/icons/tick.png"));
+        } else if (editButton->text() == " CONFIRM") {
+            // Switch back to QLabel on "Confirm" button click
+            stackedWidget->setCurrentIndex(0);
+
+            // Update the label text with the content of the QLineEdit
+            sensorName->setText(sensorNameEdit->text());
+
+            // Reset the button text and color
+            editButton->setText(" EDIT");
+            editButton->setStyleSheet("");
+            editButton->setIcon(QIcon(":/resources/icons/edit.png"));
+        }
+    });
     // adds the default QT edit icon
     QIcon editIcon(":/resources/icons/edit.png");
     editButton->setIcon(editIcon);
@@ -269,6 +309,48 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Set the central widget
     setCentralWidget(window);
+}
+//add openChart slot
+void MainWindow::openChart() {
+    GraficoSensore *grafico = new GraficoSensore();
+    //set the axis
+    QDateTimeAxis *axisX = new QDateTimeAxis;
+    axisX->setFormat("hh:mm:ss");
+    axisX->setTitleText("Time");
+    axisX->setTickCount(10);
+    grafico->setXAxis(axisX);
+
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setTitleText("Value");
+    axisY->setLabelFormat("%.2f");
+    axisY->setTickCount(5);
+    axisY->setRange(0, 100);
+    grafico->setYAxis(axisY);
+
+    //set the series
+    QLineSeries *series = new QLineSeries;
+    series->setName("Speed");
+    grafico->setSeries(series);
+
+    //set the chart
+    QChart *chart = new QChart;
+    chart->addSeries(series);
+    chart->setTitle("Speed");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+    chart->createDefaultAxes();
+    chart->setAxisX(axisX, series);
+    chart->setAxisY(axisY, series);
+    grafico->setChart(chart);
+
+    //set the chartView
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->setRubberBand(QChartView::RectangleRubberBand);
+    chartView->setDragMode(QGraphicsView::RubberBandDrag);
+    chartView->setInteractive(true);
+
+    grafico->setChartView(chartView);
+    grafico->show();
 }
 
 MainWindow::~MainWindow() {}

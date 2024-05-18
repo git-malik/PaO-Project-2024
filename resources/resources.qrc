@@ -10,6 +10,7 @@
         <file>icons/export.png</file>
         <file>icons/import.png</file>
         <file>icons/save.png</file>
+        <file>icons/tick.png</file>
     </qresource>
     <qresource prefix="/styles">
         <file>styles/main.qss</file>

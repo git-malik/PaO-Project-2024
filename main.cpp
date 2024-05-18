@@ -27,6 +27,11 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QMainWindow>
+#include "model/host.cpp"
+// #include "model/connection.cpp"
+// #include "model/sensoreBanda.cpp"
+
+
 
 // #include "mainwindow.h" // Add missing include statement for MainWindow class
 
@@ -45,7 +50,21 @@ int main(int argc, char *argv[])
     QString style(styleFile.readAll());
     app.setStyleSheet(style);
 
-    // Create the main window
+    // // Create a new host
+    // Host *h1 = new Host("123");
+    // Host *h2 = new Host("456");
+
+    // // Create a new connection
+    // Connection *c1 = new Connection("abc", *h1, *h2);
+    
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     c1->addSensore(new SensoreBanda(10));
+    // }
+
+    // // Create the main window
+    // MainWindow window(c1, c1->getSensori().size());
+    
     MainWindow window;
 
     window.show();
