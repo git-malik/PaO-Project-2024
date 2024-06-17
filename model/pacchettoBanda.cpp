@@ -9,11 +9,9 @@ PacchettoBanda::PacchettoBanda() : Pacchetto() {
     this->valore = randomFloat();
 };
 long int PacchettoBanda::getTime() {
-    //call parent function getTime
-    return Pacchetto::getTime();
+    return this->timestamp;
 }
 
 float PacchettoBanda::getValore() {
-    //call parent function getValore
-    return Pacchetto::getValore();
+    return this->valore;
 }

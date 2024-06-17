@@ -12,8 +12,8 @@ public:
     Pacchetto(const Pacchetto &p);
     //operator==
     bool operator==(const Pacchetto &p);
-    long int getTime();
-    float getValore();
+    virtual long int getTime();
+    virtual float getValore();
 };
 
 #endif

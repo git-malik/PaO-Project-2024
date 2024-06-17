@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "model/sensoreBanda.h"
+#include "view/aggiuntaSensore.cpp"
 #include "view/graficoSensore.cpp"
 
 #include <QApplication>
@@ -36,7 +38,7 @@
 // MainWindow::MainWindow(Connection *data, int size, QWidget *parent)
 //     : QMainWindow(parent), c_data(data), c_size(size) {
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent){
+    : QMainWindow(parent) {
     // QWidget window;
     QWidget *window = new QWidget;
     window->setWindowTitle("SensNet");
@@ -68,6 +70,12 @@ MainWindow::MainWindow(QWidget *parent)
     addButton->setProperty("cssClass", "green");
     topWidgetLayout->addWidget(addButton);
     topWidgetLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    // Add a slot for the "Add" button
+    // connect(addButton, &QPushButton::clicked, this, [this] {
+    //     AddSensorWindow *addSensorWindow = new AddSensorWindow();
+    // });
+    connect(addButton, SIGNAL(clicked()), this, SLOT(addSensore()));
+
 
     // Add a search bar with magnifying glass icon
     QLineEdit *searchBar = new QLineEdit;
@@ -310,47 +318,27 @@ MainWindow::MainWindow(QWidget *parent)
     // Set the central widget
     setCentralWidget(window);
 }
-//add openChart slot
+// add openChart slot
 void MainWindow::openChart() {
-    GraficoSensore *grafico = new GraficoSensore();
-    //set the axis
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setFormat("hh:mm:ss");
-    axisX->setTitleText("Time");
-    axisX->setTickCount(10);
-    grafico->setXAxis(axisX);
 
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setTitleText("Value");
-    axisY->setLabelFormat("%.2f");
-    axisY->setTickCount(5);
-    axisY->setRange(0, 100);
-    grafico->setYAxis(axisY);
+    SensoreBanda *c = new SensoreBanda(10);
+    c->misura();
+    c->misura();
+    c->misura();
+    c->misura();
+    c->misura();
 
-    //set the series
-    QLineSeries *series = new QLineSeries;
-    series->setName("Speed");
-    grafico->setSeries(series);
+    GraficoSensore *grafico = new GraficoSensore(c, nullptr);
+    // GraficoSensore *grafico = new GraficoSensore();
 
-    //set the chart
-    QChart *chart = new QChart;
-    chart->addSeries(series);
-    chart->setTitle("Speed");
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-    chart->createDefaultAxes();
-    chart->setAxisX(axisX, series);
-    chart->setAxisY(axisY, series);
-    grafico->setChart(chart);
-
-    //set the chartView
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-    chartView->setRubberBand(QChartView::RectangleRubberBand);
-    chartView->setDragMode(QGraphicsView::RubberBandDrag);
-    chartView->setInteractive(true);
-
-    grafico->setChartView(chartView);
     grafico->show();
+
+}
+
+// add addSensore slot
+void MainWindow::addSensore() {
+    AggiuntaSensore *aggiuntaSensore = new AggiuntaSensore();
+    aggiuntaSensore->show();
 }
 
 MainWindow::~MainWindow() {}

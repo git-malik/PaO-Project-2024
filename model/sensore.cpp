@@ -14,9 +14,9 @@ int Sensore::getBufferSize() {
     return this->bufferSize;
 }
 
-// const std::vector<Pacchetto*>& Sensore::getPacchetti() {
-//     return this->pacchetti;
-// }
+const std::vector<Pacchetto*>& Sensore::getPacchetti() {
+    return this->pacchetti;
+}
 
 std::string Sensore::getName() {
     return this->name;

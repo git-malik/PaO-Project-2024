@@ -1,12 +1,12 @@
 #include "./pacchetto.h"
 #include <random>
-#include <random>
-#include <chrono>
+#include <ctime>
 #include <iostream>
 
 Pacchetto::Pacchetto(){
     // TODO migliorare la generazione del timestamp
-    this->timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    //generate timestamp between current time and current time - 1 minute
+    this->timestamp = time(0) - (rand() % 60);
     this->valore = Pacchetto::randomFloat();
 }
 

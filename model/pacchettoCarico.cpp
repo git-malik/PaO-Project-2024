@@ -10,11 +10,9 @@ PacchettoCarico::PacchettoCarico(){
 };
 
 long int PacchettoCarico::getTime() {
-    //call parent function getTime
-    return Pacchetto::getTime();
+    return this->timestamp;
 }
 
 float PacchettoCarico::getValore() {
-    //call parent function getValore
-    return Pacchetto::getValore();
+    return this->valore;
 }

@@ -9,6 +9,8 @@
 #include "connection.cpp"
 #include "host.cpp"
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 int main(int argc, char const* argv[])
 {
@@ -77,5 +79,48 @@ int main(int argc, char const* argv[])
     S#
      */
     //questo non dovrebbe essere un errore perchè ho esplicitamente detto che il vettore contiene puntatori a Sensore
+    std::cout << "\tTest Classes" << std::endl;
+    Sensore *sensore11 = new SensoreCarico(10);
+    sensore11->misura();
+    sensore11->misura();
+    sensore11->misura();
+    sensore11->misura();
+
+
+    if (SensoreCarico* sensoreCarico = dynamic_cast<SensoreCarico*>(sensore11)) {
+        // Add data points from sensore.getPacchetti()
+        std::cout<<"Carico"<<std::endl;
+         std::vector<PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
+        for (PacchettoCarico* pacchetto : pacchetti) {
+            std::cout << pacchetto->getValore() << std::endl;
+        }
+    } else if (SensoreBanda* sensoreBanda = dynamic_cast<SensoreBanda*>(sensore11)) {
+        // Add data points from sensore.getPacchetti()
+        std::cout<<"Banda"<<std::endl;
+        std::vector<PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
+        for (PacchettoBanda* pacchetto : pacchetti) {
+            std::cout << pacchetto->getValore() << std::endl;
+        }
+    } else if (SensoreErrori* sensoreErrori = dynamic_cast<SensoreErrori*>(sensore11)) {
+        // Add data points from sensore.getPacchetti()
+        std::vector<PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
+        for (PacchettoErrori* pacchetto : pacchetti) {
+            std::cout << pacchetto->getValore() << std::endl;
+        }
+        std::cout<<"Errori"<<std::endl;
+    }
+    std::cout<<std::endl;
+
+    std::cout << "\tTest Dates" << std::endl;
+    SensoreCarico *sensore12 = new SensoreCarico(10);
+    //misurazione ogni 60 millisecondi
+    for (int i = 0; i < 5; i++) {
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(60));
+        sensore12->misura();
+    }
+    for (PacchettoCarico* pacchetto : sensore12->getPacchetti()) {
+        std::cout << pacchetto->getTime() << std::endl;
+    }
     return 0;
 }

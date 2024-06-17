@@ -26,7 +26,7 @@
 #include <QPixmap>
 #include <QMenuBar>
 #include <QMenu>
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include "model/host.cpp"
 // #include "model/connection.cpp"
 // #include "model/sensoreBanda.cpp"

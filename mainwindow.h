@@ -15,6 +15,7 @@ public:
 private slots:
     //openChart slot
     void openChart();
+    void addSensore();
 private:
     // Connection *c_data;
     int c_size;

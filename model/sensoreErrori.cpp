@@ -1,4 +1,4 @@
-#include "SensoreErrori.h"
+#include "sensoreErrori.h"
 #include <iostream>
 
 int SensoreErrori::currentid = 1;

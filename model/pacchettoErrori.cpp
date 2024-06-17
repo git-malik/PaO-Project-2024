@@ -20,11 +20,9 @@ float PacchettoErrori::randomFloat()
 }
 
 long int PacchettoErrori::getTime() {
-    //call parent function getTime
     return this->timestamp;
 }
 
 float PacchettoErrori::getValore() {
-    //call parent function getValore
     return this->valore;
 }

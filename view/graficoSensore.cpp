@@ -1,8 +1,19 @@
 #include "graficoSensore.h"
+#include "../model/pacchetto.cpp"
+
+#include "../model/sensoreCarico.h"
+#include "../model/sensoreErrori.h"
+#include "../model/sensoreBanda.h"
+//include pacchetto
+#include "../model/pacchettoCarico.h"
+#include "../model/pacchettoErrori.h"
+#include "../model/pacchettoBanda.h"
+
+
 //todo molto più avanti
 //slidegrid
 
-GraficoSensore::GraficoSensore(QWidget *parent) : QWidget(parent)
+GraficoSensore::GraficoSensore(QWidget *parent) : QWidget(parent), layout(new QVBoxLayout(this))
 {
     m_chart = new QChart();
     m_chartView = new QChartView(m_chart);
@@ -20,9 +31,17 @@ GraficoSensore::GraficoSensore(QWidget *parent) : QWidget(parent)
     m_chartView->setInteractive(true);
     m_chartView->setMouseTracking(true);
     m_chartView->setChart(m_chart);
+
+    layout->addWidget(m_chartView);
+    setLayout(layout);
+    //set min widht and height
+    setMinimumWidth(500);
+    setMinimumHeight(500);
+
+
 }
 
-GraficoSensore::GraficoSensore(Sensore *sensore, QWidget *parent) : QWidget(parent)
+GraficoSensore::GraficoSensore(Sensore *sensore, QWidget *parent) : QWidget(parent), layout(new QVBoxLayout(this))
 {
 
     m_chart = new QChart();
@@ -42,13 +61,47 @@ GraficoSensore::GraficoSensore(Sensore *sensore, QWidget *parent) : QWidget(pare
     m_chartView->setMouseTracking(true);
     m_chartView->setChart(m_chart);
 
-    // Add data points from sensore.getPacchetti()
-    // std::vector<Pacchetto*> pacchetti = sensore->getPacchetti();
-    // for (const Pacchetto& pacchetto : pacchetti) {
-    //     QDateTime timestamp = pacchetto.getTime(); // Assuming Pacchetto has a getTimestamp() method
-    //     double value = pacchetto.getValue(); // Assuming Pacchetto has a getValue() method
-    //     m_series->append(timestamp.toMSecsSinceEpoch(), value);
-    // }
+    layout->addWidget(m_chartView);
+    setLayout(layout);
+    //set min widht and height
+    setMinimumWidth(500);
+    setMinimumHeight(500);
+
+    //add sensor name to the chart
+    m_chart->setTitle(QString::fromStdString(sensore->getId()));
+
+    //check if the sensor is a load sensor or a speed sensor or an error sensor and add the data accordingly
+    if (SensoreCarico* sensoreCarico = dynamic_cast<SensoreCarico*>(sensore)) {
+        // Add data points from sensore.getPacchetti()
+        std::vector<PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
+        for (PacchettoCarico* pacchetto : pacchetti) {
+            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
+            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
+            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+        }
+    } else if (SensoreBanda* sensoreBanda = dynamic_cast<SensoreBanda*>(sensore)) {
+        // Add data points from sensore.getPacchetti()
+        std::vector<PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
+        for (PacchettoBanda* pacchetto : pacchetti) {
+            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
+            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
+            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+        }
+    } else if (SensoreErrori* sensoreErrori = dynamic_cast<SensoreErrori*>(sensore)) {
+        // Add data points from sensore.getPacchetti()
+        std::vector<PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
+        for (PacchettoErrori* pacchetto : pacchetti) {
+            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
+            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
+            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+        }
+    }
+
+    //set the chart scale to the maximum value of the sensor
+    m_axisY->setRange(0, 100);
+    //set the chart scale to the maximum value of the sensor
+    m_axisX->setRange(QDateTime::currentDateTime().addSecs(-60), QDateTime::currentDateTime());
+
 }
 
 void GraficoSensore::setSensore(Sensore *sensore)
@@ -58,9 +111,9 @@ void GraficoSensore::setSensore(Sensore *sensore)
 
     // Add data points from sensore.getPacchetti()
     // std::vector<Pacchetto*> pacchetti = sensore->getPacchetti();
-    // for (const Pacchetto& pacchetto : pacchetti) {
-    //     QDateTime timestamp = pacchetto.getTime(); // Assuming Pacchetto has a getTimestamp() method
-    //     double value = pacchetto.getValue(); // Assuming Pacchetto has a getValue() method
+    // for (Pacchetto* pacchetto : pacchetti) {
+    //     QDateTime timestamp = QDateTime::currentDateTime(); // Assuming Pacchetto has a getTimestamp() method
+    //     double value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
     //     m_series->append(timestamp.toMSecsSinceEpoch(), value);
     // }
 }
