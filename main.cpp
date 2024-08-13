@@ -27,13 +27,55 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QtWidgets/QMainWindow>
-#include "model/host.cpp"
-// #include "model/connection.cpp"
-// #include "model/sensoreBanda.cpp"
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QString>
+#include "model/core/host.cpp"
+#include "model/core/connection.h"
+#include "model/core/sensoreBanda.h"
+#include "model/core/sensoreErrori.h"
+#include "model/core/sensoreCarico.h"
+#include "controller.cpp"
 
 
 
 // #include "mainwindow.h" // Add missing include statement for MainWindow class
+
+// JSON WRITING TEST
+// struct Sensor {
+//     std::string id;
+//     std::string name;
+//     std::vector<Pacchetto*> pacchetti;
+//     Sensor(std::string id, std::string name, std::vector<Pacchetto*> pacchetti) : id(id), name(name), pacchetti(pacchetti) {}
+// };
+
+// Sensor s1("1", "Sensore1", std::vector<Pacchetto*>());
+
+// QJsonObject content;
+// content.insert("id", QString::fromStdString(s1.id));
+// content.insert("name", QString::fromStdString(s1.name));
+// QJsonArray pacchetti;
+// for (Pacchetto* p : s1.pacchetti) {
+//     QJsonObject pacchetto;
+//     pacchetto.insert("id", QString::fromStdString(p->getId()));
+//     pacchetto.insert("name", QString::fromStdString(p->getName()));
+//     pacchetti.append(pacchetto);
+// }
+// content.insert("pacchetti", pacchetti);
+
+// QJsonDocument document;
+// QJsonDocument doc(content);
+// QString jsonString = doc.toJson(QJsonDocument::Indented);
+// QFile file("sensor.json");
+// if (file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+//     QTextStream iStream( &file );
+//     iStream.setCodec( "utf-8" );
+//     iStream << bytes;
+//     file.close();
+// } else {
+//     cout << "file open failed: " << path.toStdString() << endl;
+// }
 
 int main(int argc, char *argv[])
 {
@@ -50,22 +92,51 @@ int main(int argc, char *argv[])
     QString style(styleFile.readAll());
     app.setStyleSheet(style);
 
-    // // Create a new host
-    // Host *h1 = new Host("123");
-    // Host *h2 = new Host("456");
 
-    // // Create a new connection
-    // Connection *c1 = new Connection("abc", *h1, *h2);
-    
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     c1->addSensore(new SensoreBanda(10));
-    // }
+    Controller *controller = new Controller();
+    //  // Create a new host
+    Host *a = new Host("A");
+    Host *b = new Host("B");
+    Host *c = new Host("C");
+    Host *d = new Host("D");
 
-    // // Create the main window
-    // MainWindow window(c1, c1->getSensori().size());
+
+    //  // Create a new connection
+    Connection *c1 = new Connection("A-B", *a, *b);
+    Connection *c2 = new Connection("B-C", *b, *c);
+    Connection *c3 = new Connection("C-D", *c, *d);
+    Connection *c4 = new Connection("A-C", *a, *c);
+
+    SensoreBanda *s1 = new SensoreBanda();
+    SensoreCarico *s2 = new SensoreCarico();
+    SensoreErrori *s3 = new SensoreErrori();
+    c1->addSensore(*s1);
+    c2->addSensore(*s2);
+    c3->addSensore(*s3);
+
+    // Add hosts to controller
+    controller->addHost(a);
+    controller->addHost(b);
+    controller->addHost(c);
+    controller->addHost(d);
+
+    // Add connections to controller
+    controller->addConnection(c1);
+    controller->addConnection(c2);
+    controller->addConnection(c3);
+    controller->addConnection(c4);
+
+    // Add sensors to connection
+    controller->addSensore(s1);
+    controller->addSensore(s2);
+    controller->addSensore(s3);
+
+    //da migliorare
+
+    // Create the main window
+    //MainWindow window(hostlist, 4, connlist, 4, sensorVector);
     
-    MainWindow window;
+    MainWindow window(controller, nullptr);
 
     window.show();
     return app.exec();

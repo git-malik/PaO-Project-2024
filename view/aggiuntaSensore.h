@@ -9,18 +9,21 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QComboBox>
-#include "../model/sensore.h"
-#include "../model/pacchetto.h"
+#include "../model/core/sensore.h"
+#include "../model/core/sensoreCarico.h"
+#include "../model/core/sensoreErrori.h"
+#include "../model/core/sensoreBanda.h"
+#include "../model/core/pacchetto.h"
 
 class AggiuntaSensore : public QWidget {
     Q_OBJECT
     public:
         explicit AggiuntaSensore(QWidget *parent = nullptr);
         virtual ~AggiuntaSensore();
-
-    private slots:
+    signals:
+        void sensoreAddedSignal(Sensore* sensore);
+    public slots:
         void onAddButtonClicked();
-
     private:
         QLabel* nameLabel;
         QLineEdit* nameLineEdit;

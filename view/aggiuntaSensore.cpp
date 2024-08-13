@@ -7,6 +7,10 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QComboBox>
+#include <QMessageBox>
+
+#include "../controller.h"
+
 
 // Sensor addition window
 AggiuntaSensore::AggiuntaSensore(QWidget *parent) : QWidget(parent), layout(new QVBoxLayout(this)) {
@@ -19,9 +23,11 @@ AggiuntaSensore::AggiuntaSensore(QWidget *parent) : QWidget(parent), layout(new 
     // Dropdown menu type selection
     typeLabel = new QLabel("Type:");
     typeComboBox = new QComboBox;
-    typeComboBox->addItem("Speed");
+    typeComboBox->addItem("Bandwidth");
     typeComboBox->addItem("Load");
     typeComboBox->addItem("Errors");
+    typeComboBox->setCurrentIndex(0);
+    typeComboBox->setFocus();
 
     formLayout->addRow(typeLabel, typeComboBox);
 
@@ -49,9 +55,16 @@ void AggiuntaSensore::onAddButtonClicked() {
     if (name.isEmpty()) {
         return;
     }
+    if (type == "Bandwidth") {
+        emit sensoreAddedSignal(new SensoreBanda(name.toStdString()));
+    } else if (type == "Load") {
+        emit sensoreAddedSignal(new SensoreCarico(name.toStdString()));
+    } else if (type == "Errors") {
+        emit sensoreAddedSignal(new SensoreErrori(name.toStdString()));
+    }else{
+        return;
+    }
 
-    // Sensore *sensore = new Sensore(name, type);
-    // emit sensoreAdded(sensore);
     close();
 }
 

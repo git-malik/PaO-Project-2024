@@ -10,7 +10,7 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-clang-x64",
-            "compilerPath": "/usr/bin/g++"
+            "compilerPath": "C:\\Users\\malik\\AppData\\Local\\MinGW\\bin\\g++.exe"
         },
         {
             "name": "Windows",

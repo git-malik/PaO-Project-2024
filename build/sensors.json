@@ -1,0 +1,14 @@
+[
+    {
+        "id": "BS#1",
+        "name": "Bandwidth Sensor"
+    },
+    {
+        "id": "LS#1",
+        "name": "Load Sensor"
+    },
+    {
+        "id": "ES#1",
+        "name": "Error Sensor"
+    }
+]

@@ -1,13 +1,16 @@
-#include "pacchetto.cpp"
-#include "pacchettoBanda.cpp"
-#include "pacchettoCarico.cpp"
-#include "pacchettoErrori.cpp"
-#include "sensore.cpp"
-#include "sensoreBanda.cpp"
-#include "sensoreCarico.cpp"
-#include "sensoreErrori.cpp"
-#include "connection.cpp"
-#include "host.cpp"
+//file di test per le classi del modello
+
+#include "core/pacchetto.cpp"
+#include "core/pacchettoBanda.cpp"
+#include "core/pacchettoCarico.cpp"
+#include "core/pacchettoErrori.cpp"
+#include "core/sensore.cpp"
+#include "core/sensoreBanda.cpp"
+#include "core/sensoreCarico.cpp"
+#include "core/sensoreErrori.cpp"
+#include "core/connection.cpp"
+#include "core/host.cpp"
+//#include "../controller.cpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -18,9 +21,9 @@ int main(int argc, char const* argv[])
 
     std::cout << "\tTest Sensore e misurazioni" << std::endl;
 
-    SensoreBanda sensore1(10);
-    SensoreCarico sensore2(20);
-    SensoreErrori sensore3(30);
+    SensoreBanda sensore1 = SensoreBanda();
+    SensoreCarico sensore2 = SensoreCarico();
+    SensoreErrori sensore3 = SensoreErrori();
     //std::cout << sensore1.getId() << std::endl;
     // std::cout << sensore2.getId() << std::endl;
     // std::cout << sensore3.getId() << std::endl;
@@ -80,47 +83,74 @@ int main(int argc, char const* argv[])
      */
     //questo non dovrebbe essere un errore perchè ho esplicitamente detto che il vettore contiene puntatori a Sensore
     std::cout << "\tTest Classes" << std::endl;
-    Sensore *sensore11 = new SensoreCarico(10);
+    Sensore *sensore11 = new SensoreCarico();
     sensore11->misura();
     sensore11->misura();
     sensore11->misura();
     sensore11->misura();
 
 
-    if (SensoreCarico* sensoreCarico = dynamic_cast<SensoreCarico*>(sensore11)) {
-        // Add data points from sensore.getPacchetti()
-        std::cout<<"Carico"<<std::endl;
-         std::vector<PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
-        for (PacchettoCarico* pacchetto : pacchetti) {
-            std::cout << pacchetto->getValore() << std::endl;
-        }
-    } else if (SensoreBanda* sensoreBanda = dynamic_cast<SensoreBanda*>(sensore11)) {
-        // Add data points from sensore.getPacchetti()
-        std::cout<<"Banda"<<std::endl;
-        std::vector<PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
-        for (PacchettoBanda* pacchetto : pacchetti) {
-            std::cout << pacchetto->getValore() << std::endl;
-        }
-    } else if (SensoreErrori* sensoreErrori = dynamic_cast<SensoreErrori*>(sensore11)) {
-        // Add data points from sensore.getPacchetti()
-        std::vector<PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
-        for (PacchettoErrori* pacchetto : pacchetti) {
-            std::cout << pacchetto->getValore() << std::endl;
-        }
-        std::cout<<"Errori"<<std::endl;
-    }
+    // if (SensoreCarico* sensoreCarico = dynamic_cast<SensoreCarico*>(sensore11)) {
+    //     // Add data points from sensore.getPacchetti()
+    //     std::cout<<"Carico"<<std::endl;
+    //      std::vector<PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
+    //     for (PacchettoCarico* pacchetto : pacchetti) {
+    //         std::cout << pacchetto->getValore() << std::endl;
+    //     }
+    // } else if (SensoreBanda* sensoreBanda = dynamic_cast<SensoreBanda*>(sensore11)) {
+    //     // Add data points from sensore.getPacchetti()
+    //     std::cout<<"Banda"<<std::endl;
+    //     std::vector<PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
+    //     for (PacchettoBanda* pacchetto : pacchetti) {
+    //         std::cout << pacchetto->getValore() << std::endl;
+    //     }
+    // } else if (SensoreErrori* sensoreErrori = dynamic_cast<SensoreErrori*>(sensore11)) {
+    //     // Add data points from sensore.getPacchetti()
+    //     std::vector<PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
+    //     for (PacchettoErrori* pacchetto : pacchetti) {
+    //         std::cout << pacchetto->getValore() << std::endl;
+    //     }
+    //     std::cout<<"Errori"<<std::endl;
+    // }
     std::cout<<std::endl;
 
     std::cout << "\tTest Dates" << std::endl;
-    SensoreCarico *sensore12 = new SensoreCarico(10);
+    SensoreCarico *sensore12 = new SensoreCarico();
     //misurazione ogni 60 millisecondi
     for (int i = 0; i < 5; i++) {
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(60));
         sensore12->misura();
     }
     for (PacchettoCarico* pacchetto : sensore12->getPacchetti()) {
         std::cout << pacchetto->getTime() << std::endl;
     }
+
+    for (PacchettoCarico* pacchetto : sensore12->getPacchetti()) {
+        std::cout << pacchetto->getTime() << std::endl;
+    }
+
+    // std::cout << "\tTest Hosts" << std::endl;
+    //Host h3 = Host("A");
+    //std::cout<<h3.getName()<<std::endl;
+    // std::cout << "\tTest Controller" << std::endl;
+    //Host h3 = Host("A");
+    //std::cout<<h3.getName()<<std::endl;
+    // Controller controller = Controller();
+    // std::vector<Host*> hosts = controller.getHosts();
+    // for (Host* host : hosts) {
+    //     std::cout << host->getName() << std::endl;
+    // }
+    // //add sensors to controller and connections
+    // controller.addHost(h2);
+    // controller.addHost(h1);
+
+    // Connection *c2 = new Connection("c2", *h1, *h2);
+    // controller.addConnection(c1);
+    // controller.addConnection(c2);
+
+    // for (Connection* connection : controller.getConnectionsByHost(h1)) {
+    //         std::cout << (c1->getPeer1()).getName() << std::endl;
+    //         std::cout << (c1->getPeer2()).getName() << std::endl;
+    // }
+
     return 0;
 }

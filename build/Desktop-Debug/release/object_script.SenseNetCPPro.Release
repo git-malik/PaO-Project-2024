@@ -1,0 +1,12 @@
+release/sensorcomplexmodeladapter.o
+release/sensorcomplexmodel.o
+release/main.o
+release/mainwindow.o
+release/sensore.o
+release/sensoreBanda.o
+release/qrc_resources.o
+release/qrc_qmake_qmake_qm_files.o
+release/moc_mainwindow.o
+release/moc_aggiuntaSensore.o
+release/moc_sensorWidget.o
+release/moc_graficoSensore.o
