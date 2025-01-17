@@ -8,10 +8,10 @@ private:
     time_t timestamp;
     float valore;
 public:
-    PacchettoBanda(time_t timestamp, float valore);
     PacchettoBanda();
-    float getValore();
-    time_t getTime();
+    float randomFloat() override;
+    float getValore() const override;
+    time_t getTime() const override;
 };
 
 #endif

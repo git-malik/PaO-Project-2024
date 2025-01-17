@@ -1,27 +1,26 @@
-#ifndef SENSOREERRORI_H
-#define SENSOREERRORI_H
+#ifndef SENSOREDELAY_H
+#define SENSOREDELAY_H
 
 #include "sensore.h"
-#include "pacchettoErrori.h"
+#include "pacchettoDelay.h"
 
-class SensoreErrori : public Sensore{
+class SensoreDelay : public Sensore{
     private:
         static int currentid;
         std::string id;
         std::string name;
-        std::vector<const PacchettoErrori*> pacchetti;
+        std::vector<const PacchettoDelay*> pacchetti;
     public:
-        SensoreErrori(const std::string& name);
-        SensoreErrori();
+        SensoreDelay(const std::string& name);
+        SensoreDelay();
         const std::string& getId() const override;
         const std::string& getName() const override;
         void setName(const std::string& name) override;
-        const std::vector<const PacchettoErrori*>& getPacchetti() const;
+        const std::vector<const PacchettoDelay*>& getPacchetti() const;
         void misura() override;
         void accept(IConstSensorVisitor* visitor) const override;
         void accept(ISensorVisitor* visitor) override;
-        ~SensoreErrori();
-        
+        ~SensoreDelay();
 };
 
 #endif

@@ -12,6 +12,8 @@
 #include "../model/core/sensore.h"
 #include "./graficoSensore.h"
 
+#define MISURAZIONIPERGRAFICO 10
+
 class SensorWidget: public QWidget
 {
     Q_OBJECT
@@ -20,23 +22,19 @@ private:
     Sensore* sensore;
     QLabel* sensorName;
     QLabel* sensorId;
-    QPushButton* openButton;
     QPushButton* editButton;
-    QPushButton* deleteButton;
-public:
-    // SensorWidget(Sensore* sensore, Controller* controller, QWidget* parent = nullptr); // controller aggiunto
-    SensorWidget(Sensore* sensore, QWidget* parent = nullptr); // controller aggiunto
-    QString getSensorName();
-    QString getSensorId();
-    void toggleEdit();
 
-public slots:
+public:
+    SensorWidget(Sensore* sensore, QWidget* parent = nullptr);
+    ~SensorWidget();
+
+private slots:
+    void toggleEdit();
     void openChart();
 
 signals:
-    void sensoreDeletedSignal(Sensore* sensore);
+    void sensoreDeletedSignal(const Sensore* sensore);
     void sensoreEditedSignal(Sensore* sensore, const QString& newName);
-
 };
 
-#endif // SENSORWIDGET_H
+#endif

@@ -7,13 +7,15 @@ class Host
 {
 private:
     static int hostId;
-    int id;
+    /**
+     * @brief unique for every host
+     */
     std::string name;
 public:
-    int getId();
-    std::string getName() const;
+    int getId() const;
+    const std::string& getName() const;
     Host();
-    Host(std::string id);
+    Host(const std::string& name);
     Host(Host& other);
 
     Host& operator=(const Host& other);

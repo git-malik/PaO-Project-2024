@@ -1,16 +1,20 @@
 #include "pacchettoCarico.h"
 
-PacchettoCarico::PacchettoCarico(time_t timestamp, float valore) : Pacchetto(timestamp, valore){};
-
 PacchettoCarico::PacchettoCarico(){
     this->timestamp = Pacchetto::getTime();
-    this->valore = Pacchetto::randomFloat();
+    this->valore = randomFloat();
 };
 
-time_t PacchettoCarico::getTime() {
+float PacchettoCarico::randomFloat()
+{
+    return 1 + (float)(rand()) / ((float)(RAND_MAX / (100 - 1)));
+}
+
+time_t PacchettoCarico::getTime() const {
     return this->timestamp;
 }
 
-float PacchettoCarico::getValore() {
+float PacchettoCarico::getValore() const {
     return this->valore;
 }
+

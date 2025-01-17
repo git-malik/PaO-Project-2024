@@ -12,14 +12,13 @@ private:
     time_t timestamp;
     float valore;
 public:
-    virtual float randomFloat();
-    Pacchetto(time_t timestamp, float valore);
+    virtual float randomFloat() = 0;
     Pacchetto();
-    Pacchetto(const Pacchetto &p);
     //operator==
-    bool operator==(const Pacchetto &p);
-    virtual time_t getTime();
-    virtual float getValore();
+    virtual bool operator==(const Pacchetto &p);
+    virtual time_t getTime() const;
+    virtual float getValore() const;
+    virtual ~Pacchetto() = default;
 };
 
 #endif

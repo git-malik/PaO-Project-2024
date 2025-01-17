@@ -8,10 +8,10 @@ class PacchettoCarico : public Pacchetto {
         time_t timestamp;
         float valore;
     public:
-        PacchettoCarico(time_t timestamp, float valore);
         PacchettoCarico();
-        float getValore();
-        time_t getTime();
+        float randomFloat() override;
+        float getValore() const override;
+        time_t getTime() const override;
 };
 
 #endif

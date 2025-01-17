@@ -12,7 +12,6 @@ SOURCES += \
     model/core/connection.cpp \
     model/core/host.cpp \
     model/json/jsonManager.cpp \
-    #model/saveException.cpp \
     main.cpp \
     controller.cpp \
     mainwindow.cpp \
@@ -20,40 +19,45 @@ SOURCES += \
     model/core/pacchettoBanda.cpp \
     model/core/pacchettoCarico.cpp \
     model/core/pacchettoErrori.cpp \
+    model/core/pacchettoJitter.cpp \
+    model/core/pacchettoDelay.cpp \
     model/core/sensore.cpp \
     model/core/sensoreBanda.cpp \
     model/core/sensoreCarico.cpp \
     model/core/sensoreErrori.cpp\
-    view/aggiuntaSensore.cpp \
+    model/core/sensoreJitter.cpp \
+    model/core/sensoreDelay.cpp \
+    view/aggiuntaSensoreWidget.cpp \
     view/graficoSensore.cpp \
     view/sensorWidget.cpp \
 
 HEADERS += \
     model/core/connection.h \
     model/core/host.h \
+    model/core/IConstSensorVisitor.h \
+    model/core/ISensorVisitor.h \
     model/json/jsonManager.h \
-    model/saveException.h \
     mainwindow.h \
     controller.h \
     model/core/pacchetto.h \
     model/core/pacchettoBanda.h \
     model/core/pacchettoCarico.h \
     model/core/pacchettoErrori.h \
+    model/core/pacchettoJitter.h \
+    model/core/pacchettoDelay.h \
     model/core/sensore.h \
     model/core/sensoreBanda.h \
     model/core/sensoreCarico.h \
     model/core/sensoreErrori.h \
-    view/aggiuntaSensore.h \
+    model/core/sensoreJitter.h \
+    model/core/sensoreDelay.h \
+    view/aggiuntaSensoreWidget.h \
     view/graficoSensore.h \
     view/sensorWidget.h \
 
 RESOURCES += \
     resources/resources.qrc
 
-TRANSLATIONS += \
-    SenseNetCPPro_en_150.ts
-CONFIG += lrelease
-CONFIG += embed_translations
 ICON = appico.icns
 RC_ICONS = appico.ico
 

@@ -9,15 +9,18 @@ class SensoreBanda : public Sensore{
         static int currentid;
         std::string id;
         std::string name;
-        std::vector<PacchettoBanda*> pacchetti;
+        std::vector<const PacchettoBanda*> pacchetti;
     public:
-        SensoreBanda(std::string name);
+        SensoreBanda(const std::string& name);
         SensoreBanda();
-        std::string getId();
-        std::string getName();
-        void setName(const std::string& name);
-        const std::vector<PacchettoBanda*>& getPacchetti();
-        void misura();
+        const std::string& getId() const override;
+        const std::string& getName() const override;
+        void setName(const std::string& name) override;
+        const std::vector<const PacchettoBanda*>& getPacchetti() const;
+        void misura() override;
+        void accept(IConstSensorVisitor* visitor) const override;
+        void accept(ISensorVisitor* visitor) override;
+        ~SensoreBanda();
 };
 
 #endif

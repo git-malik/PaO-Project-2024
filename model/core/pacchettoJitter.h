@@ -1,16 +1,16 @@
-#ifndef PACCHETTOERRORI_H
-#define PACCHETTOERRORI_H
+#ifndef PACCHETTOJITTER_H
+#define PACCHETTOJITTER_H
 
 #include "pacchetto.h"
 
-class PacchettoErrori : public Pacchetto
+class PacchettoJitter : public Pacchetto
 {
 private:
     time_t timestamp;
     float valore;
 public:
-    PacchettoErrori();
-    float randomFloat() override;
+    PacchettoJitter();
+    float randomFloat();
     float getValore() const override;
     time_t getTime() const override;
 };

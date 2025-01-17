@@ -2,142 +2,116 @@
 
 Controller::Controller()
 {
-    sensori = std::vector<Sensore*>();
-    // Create a new SensorSaver object
     saver = new JSONManager();
-    // Create a filename for the JSON file
     exportFilename = "";
+    hosts.push_back(new Host("A"));
+    hosts.push_back(new Host("B"));
+    hosts.push_back(new Host("C"));
+    hosts.push_back(new Host("D"));
+    hosts.push_back(new Host("E"));
+    hosts.push_back(new Host("F"));
+    hosts.push_back(new Host("G"));
+
+    connections.push_back(new Connection("A-B", *hosts[0], *hosts[1]));
+    connections.push_back(new Connection("B-C", *hosts[1], *hosts[2]));
+    connections.push_back(new Connection("C-D", *hosts[2], *hosts[3]));
+    connections.push_back(new Connection("D-E", *hosts[3], *hosts[4]));
+    connections.push_back(new Connection("B-F", *hosts[1], *hosts[5]));
+    connections.push_back(new Connection("A-D", *hosts[0], *hosts[3]));
+    connections.push_back(new Connection("C-F", *hosts[2], *hosts[5]));
 }
 
-Controller::~Controller()
+void Controller::addSensore(Sensore* sensore, Connection* c)
 {
-    //delete the SensorSaver object
-    //delete saver;
+    for (Connection* connection : connections) {
+        if (connection == c) {
+            c->addSensore(*sensore);
+            return;
+        }
+    }
 }
 
-void Controller::addSensore(Sensore* sensore)
+/**
+ * @brief This function checks if the sensor is present in one of the connections and removes it.
+ * @param sensore the sensor to compare with the sensors in the connections
+ */
+void Controller::removeSensore(const Sensore* sensore)
 {
-    sensori.push_back(sensore);
-    //save the sensor to the file
-    //saver->saveSensor(sensore);
-}
-
-//remove sensore
-void Controller::removeSensore(Sensore* sensore)
-{
-    //remove the sensor from the file
     for (Connection* connection : connections) {
         connection->removeSensore(*sensore);
     }
-    sensori.erase(std::remove(sensori.begin(), sensori.end(), sensore), sensori.end());
-
-    //saver->removeSensor(sensore);
 }
 
-void Controller::addHost(Host* host)
+std::vector<Sensore*> Controller::getSensori() const
 {
-    hosts.push_back(host);
-    // save the host to the file
-    // saver->saveHost(*host);
-}
-
-void Controller::removeHost(Host* host)
-{
-    // remove the host from the vector
-    hosts.erase(std::remove(hosts.begin(), hosts.end(), host), hosts.end());
-    // remove the host from the file
-    // saver->removeHost(*host);
-}
-
-void Controller::addConnection(Connection* connection)
-{
-    connections.push_back(connection);
-    // save the connection to the file
-    // saver->saveConnection(*connection);
-}
-
-void Controller::removeConnection(Connection* connection)
-{
-    // remove the connection from the vector
-    connections.erase(std::remove(connections.begin(), connections.end(), connection), connections.end());
-    // remove the connection from the file
-    // saver->removeConnection(*connection);
-}
-
-const std::vector<Sensore*>& Controller::getSensori()
-{
+    std::vector<Sensore*> sensori;
+    for (Connection* connection : connections) {
+        for (Sensore* s : connection->getSensori()) {
+            sensori.push_back(s);
+        }
+    }
     return sensori;
 }
 
-// Getter for hosts
-const std::vector<Host*>& Controller::getHosts()
+const std::vector<Host*>& Controller::getHosts() const
 {
     return hosts;
 }
 
-// Getter for connections
-const std::vector<Connection*>& Controller::getConnections()
+const std::vector<Connection*>& Controller::getConnections() const
 {
     return connections;
 }
 
-// Getter for saver
-// JSONManager* Controller::getJSONManager()
-// {
-//     return saver;
-// }
-
-std::vector<Connection*> Controller::getConnectionsByHost(Host* host)
+const std::vector<Connection*> Controller::getConnectionsByHost(const Host* host) const
 {
     std::vector<Connection*> connectionsByHost;
-    for (Connection* connection : connections)
-    {
-        if (connection->getPeer1() == *host || connection->getPeer2() == *host)
-        {
+    for (Connection* connection : connections) {
+        if (connection->getPeer1() == *host || connection->getPeer2() == *host) {
             connectionsByHost.push_back(connection);
         }
     }
     return connectionsByHost;
 }
 
-Host* Controller::getHostByName(std::string name){
-    for (Host* host : hosts)
-    {
-        if (host->getName() == name)
-        {
+const Host* Controller::getHostByName(const std::string& name) const
+{
+    for (Host* host : hosts) {
+        if (host->getName() == name) {
             return host;
         }
     }
     return nullptr;
 }
 
-//operator= overload
-Controller& Controller::operator=(const Controller& other)
-{
-    if (this != &other)
-    {
-        //delete the SensorSaver object
-        //delete saver;
-        //copy the sensori vector
-        sensori = other.sensori;
-        hosts = other.hosts;
-        connections = other.connections;
-        saver = other.saver;
-
+const std::vector<Sensore*> Controller::getSensoriByName(const std::string& text) const{
+    std::vector<Sensore*> sensoriByName;
+    for (Connection* connection : connections) {
+        for (Sensore* s : connection->getSensori()) {
+            QRegularExpression regex(QString::fromStdString(text), QRegularExpression::CaseInsensitiveOption);
+            QRegularExpressionMatch match = regex.match(QString::fromStdString(s->getName()));
+            QRegularExpressionMatch match2 = regex.match(QString::fromStdString(s->getId()));
+            if (match.hasMatch() || match2.hasMatch()) {
+                sensoriByName.push_back(s);
+            }
+        }
     }
-    return *this;
+    return sensoriByName;
 }
 
-// for json
 void Controller::clearSensors() {
-    // Clear the existing sensors
-    for (Sensore* sensor : sensori) {
-        removeSensore(sensor);
+    for (Connection* connection : connections) {
+        for (Sensore* s : connection->getSensori())
+        {
+            connection->removeSensore(*s);
+        }
+        
     }
-    sensori.clear();
+
 }
 
-bool Controller::saveJSON() {
+bool Controller::saveJSON()
+{
     try {
         exportDataJSON(exportFilename);
     } catch (const std::exception& e) {
@@ -146,84 +120,81 @@ bool Controller::saveJSON() {
     return true;
 }
 
-bool Controller::exportDataJSON(QString filename) {
+bool Controller::exportDataJSON(const QString& filename)
+{
     try {
-        // Check if the filename is valid
         if (filename.isEmpty()) {
             return false;
         }
         saver->exportJSON(filename, connections);
         exportFilename = filename;
     } catch (const std::exception& e) {
+        lastErrorMessage = QString::fromStdString(e.what());
         return false;
     }
     return true;
 }
 
-bool Controller::importDataJSON(QString filename) {
+bool Controller::importDataJSON(const QString& filename)
+{
     try {
-        // Check if the filename is valid
         if (filename.isEmpty()) {
             return false;
         }
 
-        // Load the data from the JSON file
         std::vector<Connection*> importedConnections = saver->loadJSON(filename);
-
-        // Clear the existing sensors
         clearSensors();
-
-        // Add sensors to matching connections
         for (Connection* importedConnection : importedConnections) {
-            Connection* existingConnection = nullptr;
-            
-            // Find matching existing connection
             for (Connection* connection : connections) {
                 if (connection->getName() == importedConnection->getName()) {
-                    existingConnection = connection;
+                    *connection = *importedConnection;
                     break;
                 }
             }
-
-            // If connection doesn't exist, raise an error
-            if (!existingConnection) {
-                throw std::runtime_error("Connection " + importedConnection->getName() + " does not exist in the current configuration.");
-            }
-
-            // Add sensors to the existing connection
-            for (Sensore* sensor : importedConnection->getSensori()) {
-                existingConnection->addSensore(*sensor);
-                // Add sensor to the controller's sensor list if it's not already there
-                if (std::find(sensori.begin(), sensori.end(), sensor) == sensori.end()) {
-                    addSensore(sensor);
-                }
-            }
-
-            // Clean up the imported connection as we're not using it
-            delete importedConnection;
         }
-
-        // Update the export filename
         exportFilename = filename;
 
     } catch (const std::exception& e) {
-        // Log the error message
-        qDebug() << "Error importing JSON: " << e.what();
+        lastErrorMessage = QString::fromStdString(e.what());
         return false;
     }
     return true;
 }
 
-const QString Controller::getExportFilename() {
+const QString& Controller::getExportFilename() const
+{
     return exportFilename;
+}
+
+const QString Controller::getLastErrorMessage()
+{
+    QString message = lastErrorMessage;
+    lastErrorMessage = "";
+    return message;
 }
 
 void Controller::editSensore(Sensore* sensore, const QString& newName)
 {
-    for (Sensore* sensor : sensori)
-        if (sensor == sensore){
+
+    for (Sensore* sensor : getSensori()) {
+        if (sensor == sensore) {
             sensor->setName(newName.toStdString());
             return;
         }
+    }
     throw std::runtime_error("Sensor not found");
 }
+
+Controller::~Controller()
+{
+    delete saver;
+    for (Connection* connection : connections) {
+        delete connection;
+    }
+    connections.clear();
+    for (Host* host : hosts) {
+        delete host;
+    }
+    hosts.clear();
+}
+

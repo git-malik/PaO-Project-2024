@@ -1,15 +1,15 @@
-#ifndef PACCHETTOERRORI_H
-#define PACCHETTOERRORI_H
+#ifndef PACCHETTODELAY_H
+#define PACCHETTODELAY_H
 
 #include "pacchetto.h"
 
-class PacchettoErrori : public Pacchetto
+class PacchettoDelay : public Pacchetto
 {
 private:
     time_t timestamp;
     float valore;
 public:
-    PacchettoErrori();
+    PacchettoDelay();
     float randomFloat() override;
     float getValore() const override;
     time_t getTime() const override;

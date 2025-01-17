@@ -1,36 +1,5 @@
 #include "graficoSensore.h"
 
-// todo molto più avanti
-// slidegrid
-
-/* GraficoSensore::GraficoSensore(QWidget *parent) : QWidget(parent), layout(new QVBoxLayout(this))
-{
-    m_chart = new QChart();
-    m_chartView = new QChartView(m_chart);
-    m_series = new QLineSeries();
-    m_axisX = new QDateTimeAxis(); // Use QDateTimeAxis for timestamp on x-axis
-    m_axisY = new QValueAxis();
-    m_chart->addSeries(m_series);
-    m_chart->addAxis(m_axisX, Qt::AlignBottom);
-    m_chart->addAxis(m_axisY, Qt::AlignLeft);
-    m_series->attachAxis(m_axisX);
-    m_series->attachAxis(m_axisY);
-    m_chartView->setRenderHint(QPainter::Antialiasing);
-    m_chartView->setRubberBand(QChartView::RectangleRubberBand);
-    m_chartView->setDragMode(QGraphicsView::RubberBandDrag);
-    m_chartView->setInteractive(true);
-    m_chartView->setMouseTracking(true);
-    m_chartView->setChart(m_chart);
-
-    layout->addWidget(m_chartView);
-    setLayout(layout);
-    //set min widht and height
-    setMinimumWidth(500);
-    setMinimumHeight(500);
-
-
-} */
-
 GraficoSensore::GraficoSensore(Sensore* sensore, QWidget* parent)
     : QWidget(parent)
     , sensore(sensore)
@@ -39,48 +8,15 @@ GraficoSensore::GraficoSensore(Sensore* sensore, QWidget* parent)
     m_chart = new QChart();
     m_chartView = new QChartView(m_chart);
     m_series = new QLineSeries();
-    m_axisX = new QDateTimeAxis(); // Use QDateTimeAxis for timestamp on x-axis
+    m_axisX = new QDateTimeAxis();
     m_axisY = new QValueAxis();
-    // set min widht and height
-    setMinimumWidth(500);
+    setMinimumWidth(700);
     setMinimumHeight(500);
-
-    // add sensor name to the chart
     m_chart->setTitle(QString::fromStdString(sensore->getId()));
-
-    // check if the sensor is a load sensor or a speed sensor or an error sensor and add the data accordingly
-    if (SensoreCarico* sensoreCarico = dynamic_cast<SensoreCarico*>(sensore)) {
-        // Add data points from sensore.getPacchetti()
-        std::vector<PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
-        for (PacchettoCarico* pacchetto : pacchetti) {
-            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
-            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
-            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
-        }
-    } else if (SensoreBanda* sensoreBanda = dynamic_cast<SensoreBanda*>(sensore)) {
-        // Add data points from sensore.getPacchetti()
-        std::vector<PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
-        for (PacchettoBanda* pacchetto : pacchetti) {
-            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
-            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
-            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
-        }
-    } else if (SensoreErrori* sensoreErrori = dynamic_cast<SensoreErrori*>(sensore)) {
-        // Add data points from sensore.getPacchetti()
-        std::vector<PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
-        for (PacchettoErrori* pacchetto : pacchetti) {
-            QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); // Assuming Pacchetto has a getTimestamp() method that returns a time in seconds
-            float value = pacchetto->getValore(); // Assuming Pacchetto has a getValue() method
-            m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
-        }
-    } else {
-        // Add a dot at the center of the chart
-        m_series->append(QPointF(0, 0));
-    }
+    m_axisX->setTitleText("Time");
+    m_chart->legend()->show();
+    sensore->accept(this);
     m_series->setMarkerSize(8);
-    // set the chart scale to the maximum value of the sensor
-    m_axisY->setRange(0, 100);
-    // set the chart scale to the maximum value of the sensor
     m_axisX->setRange(QDateTime::currentDateTime().addSecs(+3600), QDateTime::currentDateTime());
 
 
@@ -99,61 +35,83 @@ GraficoSensore::GraficoSensore(Sensore* sensore, QWidget* parent)
     setLayout(layout);
 }
 
-void GraficoSensore::setXAxis(QDateTimeAxis* axis)
+void GraficoSensore::visit(const SensoreCarico* sensoreCarico)
 {
-    m_axisX = axis;
+    m_series->setName("Connection's load level through time");
+    m_axisY->setTitleText("Load Level in %");
+    m_axisY->setRange(0, 100);
+    std::vector<const PacchettoCarico*> pacchetti = sensoreCarico->getPacchetti();
+    for (const PacchettoCarico* pacchetto : pacchetti) {
+        QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime()); 
+        float value = pacchetto->getValore();
+        m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+    }
 }
 
-void GraficoSensore::setYAxis(QValueAxis* axis)
+void GraficoSensore::visit(const SensoreBanda* sensoreBanda)
 {
-    m_axisY = axis;
+    m_series->setName("Connection's bandwidth usage through time");
+    m_axisY->setTitleText("Bandwidth Usage in Mbps");
+    m_axisY->setRange(0, 1000);
+    std::vector<const PacchettoBanda*> pacchetti = sensoreBanda->getPacchetti();
+    for (const PacchettoBanda* pacchetto : pacchetti) {
+        QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime());
+        float value = pacchetto->getValore(); 
+        m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+    }
 }
 
-void GraficoSensore::setChart(QChart* chart)
+void GraficoSensore::visit(const SensoreErrori* sensoreErrori)
 {
-    m_chart = chart;
+    
+    m_series->setName("Connection's error rate through time");
+    m_axisY->setTitleText("Number of Errors");
+    m_axisY->setRange(0, 500);
+    // Set the color of the line series to red
+    m_series->setColor(QColor(255, 0, 0));
+    std::vector<const PacchettoErrori*> pacchetti = sensoreErrori->getPacchetti();
+    for (const PacchettoErrori* pacchetto : pacchetti) {
+        QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime());
+        float value = pacchetto->getValore(); 
+        m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+    }
 }
 
-void GraficoSensore::setChartView(QChartView* chartView)
+void GraficoSensore::visit(const SensoreJitter* sensoreJitter)
 {
-    m_chartView = chartView;
+    
+    m_series->setName("Connection's jitter through time");
+    m_axisY->setTitleText("Jitter in ms");
+    m_axisY->setRange(0, 50);
+    std::vector<const PacchettoJitter*> pacchetti = sensoreJitter->getPacchetti();
+    for (const PacchettoJitter* pacchetto : pacchetti) {
+        QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime());
+        float value = pacchetto->getValore(); 
+        m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+    }
 }
 
-void GraficoSensore::setSeries(QLineSeries* series)
+void GraficoSensore::visit(const SensoreDelay* sensoreDelay)
 {
-    m_series = series;
-}
-
-QDateTimeAxis* GraficoSensore::getXAxis()
-{
-    return m_axisX;
-}
-
-QValueAxis* GraficoSensore::getYAxis()
-{
-    return m_axisY;
-}
-
-QChart* GraficoSensore::getChart()
-{
-    return m_chart;
-}
-
-QChartView* GraficoSensore::getChartView()
-{
-    return m_chartView;
-}
-
-QLineSeries* GraficoSensore::getSeries()
-{
-    return m_series;
+    
+    m_series->setName("Connection's delay through time");
+    m_axisY->setTitleText("Delay in ms");
+    m_axisY->setRange(0, 1000);
+    std::vector<const PacchettoDelay*> pacchetti = sensoreDelay->getPacchetti();
+    for (const PacchettoDelay* pacchetto : pacchetti) {
+        QDateTime timestamp = QDateTime::fromSecsSinceEpoch(pacchetto->getTime());
+        float value = pacchetto->getValore(); 
+        m_series->append(QPointF(timestamp.toMSecsSinceEpoch(), value));
+    }
 }
 
 GraficoSensore::~GraficoSensore()
 {
-    delete m_chart;
-    delete m_chartView;
-    delete m_series;
     delete m_axisX;
     delete m_axisY;
+    delete m_series;
+    delete m_chartView;
+    delete m_chart;
+    delete layout;
+
 }

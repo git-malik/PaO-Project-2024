@@ -1,26 +1,45 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
+
 #include "host.h"
 #include "sensore.h"
+#include "sensoreBanda.h"
+#include "sensoreCarico.h"
+#include "sensoreErrori.h"
+#include "sensoreJitter.h"
+#include "sensoreDelay.h"
+#include "ISensorVisitor.h"
 #include <vector>
 #include <cstring>
 
-class Connection
+class Connection: public ISensorVisitor
 {
 private:
     std::string name;
     Host peer1;
     Host peer2;
-    std::vector<Sensore*> sensori; // Change the type of the vector to hold pointers to const Sensore objects
+    SensoreBanda* sensoreBanda;
+    SensoreCarico* sensoreCarico;
+    SensoreErrori* sensoreErrori;
+    SensoreJitter* sensoreJitter;
+    SensoreDelay* sensoreDelay;
+    std::vector<Sensore*> sensori; 
 public:
-    Connection(std::string id, const Host& peer11, const Host& peer21);
-    std::string getName() const;
-    const std::vector<Sensore*>& getSensori(); // Change the return type of the getSensori() function
-    const Host& getPeer1();
-    const Host& getPeer2();
-    void addSensore(const Sensore& sensore);
+    Connection(const std::string& id, Host& peer11, Host& peer21);
+    const std::string& getName() const;
+    const std::vector<Sensore*>& getSensori() const;
+    const Host& getPeer1() const;
+    const Host& getPeer2() const;
+    void addSensore(Sensore& sensore);
     void removeSensore(const Sensore& sensore);
-    void removeSensoreAt(int index);
+    ~Connection();
+
+    void visit(SensoreBanda* sensore) override;
+    void visit(SensoreCarico* sensore) override;
+    void visit(SensoreErrori* sensore) override;
+    void visit(SensoreJitter* sensore) override;
+    void visit(SensoreDelay* sensore) override;
+
     //operator== override
     bool operator==(const Connection& other) const;
 

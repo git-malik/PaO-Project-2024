@@ -34,6 +34,11 @@ QPushButton:hover {
     color: #bec0ff;
 }
 
+*[cssClass="white"] {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
 *[cssClass="red"]:hover { 
     background-color: #BF2E2E;
     color: #FFFFFF;

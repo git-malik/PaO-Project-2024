@@ -1,15 +1,20 @@
 #include "pacchettoBanda.h"
 
-PacchettoBanda::PacchettoBanda(time_t timestamp, float valore) : Pacchetto(timestamp, valore){};
-
 PacchettoBanda::PacchettoBanda() : Pacchetto() {
     this->timestamp = Pacchetto::getTime();
     this->valore = randomFloat();
 };
-time_t PacchettoBanda::getTime() {
+
+float PacchettoBanda::randomFloat()
+{
+    return 1 + (float)(rand()) / ((float)(RAND_MAX / (1000 - 1)));
+}
+
+time_t PacchettoBanda::getTime() const {
     return this->timestamp;
 }
 
-float PacchettoBanda::getValore() {
+float PacchettoBanda::getValore() const {
     return this->valore;
 }
+

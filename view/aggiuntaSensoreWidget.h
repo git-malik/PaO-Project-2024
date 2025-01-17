@@ -1,5 +1,5 @@
-#ifndef AGGIUNTASENSORE_H
-#define AGGIUNTASENSORE_H
+#ifndef AGGIUNTASENSOREWIDGET_H
+#define AGGIUNTASENSOREWIDGET_H
 
 #include <QApplication>
 #include <QFormLayout>
@@ -10,25 +10,27 @@
 #include <QWidget>
 #include <QComboBox>
 #include "../model/core/sensore.h"
+#include "../model/core/connection.h"
 #include "../model/core/sensoreCarico.h"
 #include "../model/core/sensoreErrori.h"
 #include "../model/core/sensoreBanda.h"
 #include "../model/core/pacchetto.h"
 
-class AggiuntaSensore : public QWidget {
+class AggiuntaSensoreWidget : public QWidget {
     Q_OBJECT
     public:
-        explicit AggiuntaSensore(QWidget *parent = nullptr);
-        virtual ~AggiuntaSensore();
+        AggiuntaSensoreWidget(const std::vector<Connection*>& connections, QWidget *parent = nullptr);
+        ~AggiuntaSensoreWidget();
     signals:
-        void sensoreAddedSignal(Sensore* sensore);
-    public slots:
+        void sensoreAddedSignal(Sensore* sensore, Connection* connection);
+    private slots:
         void onAddButtonClicked();
     private:
         QLabel* nameLabel;
         QLineEdit* nameLineEdit;
         QLabel* typeLabel;
         QComboBox* typeComboBox;
+        QComboBox* connectionComboBox;
         QPushButton* addButton;
         QPushButton* cancelButton;
         QVBoxLayout* layout;
@@ -36,4 +38,4 @@ class AggiuntaSensore : public QWidget {
         QWidget* widget;
 };
 
-#endif // AGGIUNTASENSORE_H
+#endif

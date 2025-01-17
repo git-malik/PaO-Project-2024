@@ -1,6 +1,9 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+
 #include "model/core/sensore.h"
 #include "model/core/host.h"
 #include "model/core/connection.h"
@@ -9,39 +12,35 @@
 class Controller {
 
 public:
-    explicit Controller();
+    Controller();
     ~Controller();
 
-    void addSensore(Sensore* sensore);
-    void removeSensore(Sensore* sensore);
+    void addSensore(Sensore* sensore, Connection* connection);
+    void removeSensore(const Sensore* sensore);
     void editSensore(Sensore* sensore, const QString& newName); 
-    void addConnection(Connection* connection);
-    void removeConnection(Connection* connection);
-    void addHost(Host* host);
-    void removeHost(Host* host);
-    const std::vector<Sensore*>& getSensori();
-    const std::vector<Connection*>& getConnections();
-    std::vector<Connection*> getConnectionsByHost(Host* host);
-    Host* getHostByName(std::string name);
-    const std::vector<Host*>& getHosts();
-    JSONManager* getJSONManager();
+    std::vector<Sensore*> getSensori() const;
+    const std::vector<Connection*>& getConnections() const;
+    const std::vector<Host*>& getHosts() const;
+    const std::vector<Connection*> getConnectionsByHost(const Host* host) const;
+    const Host* getHostByName(const std::string& name) const;
+    const std::vector<Sensore*> getSensoriByName(const std::string& name) const;
 
-    //operator= overload
-    Controller& operator=(const Controller& other);
+    const JSONManager& getJSONManager() const;
 
     // for json
     void clearSensors();
     bool saveJSON();
-    bool exportDataJSON(QString filename);
-    bool importDataJSON(QString filename);
-    const QString getExportFilename();
+    bool exportDataJSON(const QString& filename);
+    bool importDataJSON(const QString& filename);
+    const QString& getExportFilename() const;
+    const QString getLastErrorMessage();
 
 private:
-    std::vector<Sensore*> sensori;
     std::vector<Connection*> connections;
     std::vector<Host*> hosts;
     JSONManager *saver;
     QString exportFilename;
+    QString lastErrorMessage;
 };
 
-#endif // CONTROLLER_H
+#endif
