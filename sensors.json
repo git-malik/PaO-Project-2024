@@ -1,0 +1,49 @@
+[
+    {
+        "name": "A-B",
+        "sensors": [
+            {
+                "id": "BS#1",
+                "name": "Bandwidth Sensor"
+            }
+        ]
+    },
+    {
+        "name": "B-C",
+        "sensors": [
+            {
+                "id": "LS#1",
+                "name": "Load Sensor"
+            }
+        ]
+    },
+    {
+        "name": "C-D",
+        "sensors": [
+            {
+                "id": "ES#1",
+                "name": "Error Sensor"
+            }
+        ]
+    },
+    {
+        "name": "D-E",
+        "sensors": [
+        ]
+    },
+    {
+        "name": "B-F",
+        "sensors": [
+        ]
+    },
+    {
+        "name": "A-D",
+        "sensors": [
+        ]
+    },
+    {
+        "name": "C-F",
+        "sensors": [
+        ]
+    }
+]
